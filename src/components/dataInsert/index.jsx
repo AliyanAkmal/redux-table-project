@@ -1,13 +1,27 @@
-import { Box, Button, Input } from "@chakra-ui/react";
+import { Box, Button, Input, Text } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setArts } from "../../store/tableSlice/tableSlice";
 
-const DataInsertion = () => {
+const DataInsertion = ({ setInsert }) => {
   const dispatch = useDispatch();
   const students = useSelector((state) => state.student.students);
-
+  const validate = (value) => {
+    const errors = {};
+    if (!value.name) {
+      errors.name = "Input value is invalid";
+    } else if (!value.email) {
+      errors.email = "Please enter a valid email";
+    } else if (value.age < 18) {
+      errors.age = "You are under the age limit";
+    } else if (value.age === "" || undefined) {
+      errors.age = "Required";
+    } else if (!value.dateOfBirth) {
+      errors.dateOfBirth = "Required";
+    }
+    return errors;
+  };
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -15,10 +29,11 @@ const DataInsertion = () => {
       age: "",
       dateOfBirth: "",
     },
+    validate,
     onSubmit: (values, { resetForm }) => {
-      // const updatedStudents = [...students, values];
       dispatch(setArts([...students, values]));
       resetForm();
+      setInsert(true);
     },
   });
 
@@ -33,7 +48,13 @@ const DataInsertion = () => {
           name="name"
           onChange={formik.handleChange}
           value={formik.values.name}
+          error={formik.errors.name}
         />
+        {formik.errors.name ? (
+          <Text color="red" fontSize="small" pl={3}>
+            {formik.errors.name}
+          </Text>
+        ) : null}
         <Input
           bg="#EDF2F7"
           placeholder="Email"
@@ -42,7 +63,13 @@ const DataInsertion = () => {
           name="email"
           onChange={formik.handleChange}
           value={formik.values.email}
+          error={formik.errors.email}
         />
+        {formik.errors.email ? (
+          <Text color="red" fontSize="small" pl={3}>
+            {formik.errors.email}
+          </Text>
+        ) : null}
         <Input
           bg="#EDF2F7"
           placeholder="Age"
@@ -51,7 +78,13 @@ const DataInsertion = () => {
           name="age"
           onChange={formik.handleChange}
           value={formik.values.age}
+          error={formik.errors.age}
         />
+        {formik.errors.age ? (
+          <Text color="red" fontSize="small" pl={3}>
+            {formik.errors.age}
+          </Text>
+        ) : null}
         <Input
           bg="#EDF2F7"
           placeholder="Date of Birth"
@@ -60,7 +93,13 @@ const DataInsertion = () => {
           name="dateOfBirth"
           onChange={formik.handleChange}
           value={formik.values.dateOfBirth}
+          error={formik.errors.dateOfBirth}
         />
+        {formik.errors.dateOfBirth ? (
+          <Text color="red" fontSize="small" pl={3}>
+            {formik.errors.dateOfBirth}
+          </Text>
+        ) : null}
         <Button type="submit">Submit</Button>
       </Box>
     </form>

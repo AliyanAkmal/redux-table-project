@@ -15,7 +15,7 @@ const TableComponent = () => {
 
   return (
     <TableContainer>
-      <Table size="sm">
+      <Table size="md">
         <Thead>
           <Tr>
             <Th>Name</Th>
@@ -25,14 +25,15 @@ const TableComponent = () => {
           </Tr>
         </Thead>
         <Tbody>
-          {students.map((data, index) => (
-            <Tr key={index}>
-              <Td>{data.name}</Td>
-              <Td>{data.email}</Td>
-              <Td>{data.age}</Td>
-              <Td>{data.dateOfBirth}</Td>
-            </Tr>
-          ))}
+          {students &&
+            students.map((data, index) => (
+              <Tr key={index}>
+                <Td>{data.name}</Td>
+                <Td>{data.email}</Td>
+                <Td>{data.age}</Td>
+                <Td>{data.dateOfBirth}</Td>
+              </Tr>
+            ))}
         </Tbody>
       </Table>
     </TableContainer>
